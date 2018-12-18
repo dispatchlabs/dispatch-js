@@ -1,0 +1,72 @@
+{
+  "name": "@dispatchlabs/dispatch-js",
+  "version": "2.3.0",
+  "description": "The Dispatch SDK for Node and JavaScript developers.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dispatchlabs/dispatch-js.git"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "nyc mocha",
+    "autotest": "supervisor -q -n exit -x mocha -- -b",
+    "examples": "node ./examples/node/",
+    "start": "node lib/index.js",
+    "browser": "browserify ./lib/index_browser.js --standalone Dispatch -p mapstraction --debug -t uglifyify -o dist/dispatch.js",
+    "watch": "watchify ./lib/index_browser.js --standalone Dispatch -p mapstraction --debug --verbose -t uglifyify -o dist/dispatch.js"
+  },
+  "browser": {
+    "solc": false
+  },
+  "keywords": [
+    "dispatch",
+    "sdk",
+    "node",
+    "javascript",
+    "blockchain"
+  ],
+  "author": "Dispatch Labs <developers@dispatchlabs.io> (http://dispatchlabs.io)",
+  "license": "LGPL-3.0",
+  "dependencies": {
+    "big-integer": "^1.6.36",
+    "crypto": "^1.0.1",
+    "keccak": "^1.4.0",
+    "secp256k1": "^3.5.0",
+    "solc": "^0.4.24"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "chai": "^4.1.2",
+    "cached-path-relative": ">=1.0.2",
+    "gulp-format-md": "^1.0.0",
+    "husky": "^1.1.2",
+    "mapstraction": "^1.0.1",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "supervisor": "^0.12.0",
+    "uglifyify": "^5.0.1",
+    "watchify": "^3.11.0"
+  },
+  "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "reflinks": [
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run browser"
+    }
+  }
+}
