@@ -4,7 +4,7 @@
   "description": "The Dispatch SDK for Node and JavaScript developers.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dispatchlabs/dispatch-js.git"
+    "url": "git+https://github.com/dispatchlabs/dispatch-js.git"
   },
   "main": "lib/index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "blockchain"
   ],
   "author": "Dispatch Labs <developers@dispatchlabs.io> (http://dispatchlabs.io)",
-  "license": "LGPL-3.0",
+  "license": "LGPL-2.1",
   "dependencies": {
     "big-integer": "^1.6.36",
     "crypto": "^1.0.1",
@@ -68,5 +68,14 @@
     "hooks": {
       "pre-commit": "npm run browser"
     }
+  },
+  "bugs": {
+    "url": "https://github.com/dispatchlabs/dispatch-js/issues"
+  },
+  "homepage": "https://github.com/dispatchlabs/dispatch-js#readme",
+  "directories": {
+    "example": "examples",
+    "lib": "lib",
+    "test": "test"
   }
 }
