@@ -141,7 +141,6 @@ Creates and sends a transaction from the account that will create a new Smart Co
 
 * **{string}**: code - Bytecode of a compiled contract.
 * **{string|array}**: code - The ABI of the contract.
-* **{number}**: value - The number of tokens to seed the contract with.
 * `returns` **{Transaction}**: Returns a transaction which has already been sent.
 
 **Example**
@@ -164,7 +163,6 @@ Creates and sends a transaction from the account that will execute a method on a
 * **{string|Account|Transaction}**: to - The address of an existing contract, an Account representing the contract, or the contract creation Transaction.
 * **{string}**: method - The method in the contract to call.
 * **{array}**: params - The parameters to use during the method call.
-* **{number}**: value - The number of tokens to send to the contract for the method call.
 * `returns` **{Transaction}**: Returns a transaction which has already been sent.
 
 **Example**
