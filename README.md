@@ -30,11 +30,11 @@ var Dispatch = require('@dispatchlabs/dispatch-js');
 
 JavaScript:
 
-For JavaScript, the top-level object is `DisJS`. Any of the models and methods below (unless otherwise stated) can be used in the browser by replacing `Dispatch` with `DisJS`. For example;
+For JavaScript, the top-level object is `Dispatch`. Any of the models and methods below (unless otherwise stated) can be used in the browser by replacing `Dispatch` with `Dispatch`. For example;
 
 ```js
 // Create an empty account
-var account = new DisJS.Account();
+var account = new Dispatch.Account();
 account.init();
 ```
 
