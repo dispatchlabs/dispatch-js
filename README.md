@@ -119,7 +119,7 @@ Creates and sends a transaction that will transfer tokens from the source accoun
 **Params**
 
 * **{string|Account}**: to - The address or Account to send the tokens to.
-* **{number}**: value - The number of tokens to send.
+* **{number}**: The number of Divitos to send. 1 Divvy = 10,000,000,000 Divitos
 * `returns` **{Transaction}**: Returns a transaction which has already been sent.
 
 **Example**
