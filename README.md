@@ -1,8 +1,8 @@
-# @dispatchlabs/dispatch-js [![NPM version](https://img.shields.io/npm/v/@dispatchlabs/dispatch-js.svg?style=flat)](https://www.npmjs.com/package/@dispatchlabs/dispatch-js) [![NPM monthly downloads](https://img.shields.io/npm/dm/@dispatchlabs/dispatch-js.svg?style=flat)](https://npmjs.org/package/@dispatchlabs/dispatch-js) [![NPM total downloads](https://img.shields.io/npm/dt/@dispatchlabs/dispatch-js.svg?style=flat)](https://npmjs.org/package/@dispatchlabs/dispatch-js) [![Linux Build Status](https://img.shields.io/travis/dispatchlabs/dispatchlabs.svg?style=flat&label=Travis)](https://travis-ci.org/dispatchlabs/dispatchlabs)
+# @dispatchlabs/dispatch-js [![NPM version](https://img.shields.io/npm/v/@dispatchlabs/dispatch-js.svg?style=flat)](https://www.npmjs.com/package/@dispatchlabs/dispatch-js) [![NPM monthly downloads](https://img.shields.io/npm/dm/@dispatchlabs/dispatch-js.svg?style=flat)](https://npmjs.org/package/@dispatchlabs/dispatch-js) [![NPM total downloads](https://img.shields.io/npm/dt/@dispatchlabs/dispatch-js.svg?style=flat)](https://npmjs.org/package/@dispatchlabs/dispatch-js)
 
 > The Dispatch SDK for Node and JavaScript developers.
 
-Please consider following this project's author, [Dispatch Labs](https://github.com/David Hutchings), and consider starring the project to show your :heart: and support.
+Please consider following this project's author, [LinkedIn Profile](https://www.linkedin.com/in/chefdavehutchings/), and consider starring the project to show your :heart: and support.
 
 ## Install
 
@@ -353,11 +353,9 @@ $ npm install -g verbose/verb#dev verb-generate-readme && verb
 
 ### Author
 
-**Dispatch Labs**
+**David Hutchings at Dispatch Labs**
 
-* [GitHub Profile](https://github.com/David Hutchings)
-* [Twitter Profile](https://twitter.com/David Hutchings)
-* [LinkedIn Profile](https://linkedin.com/in/jonschlinkert)
+* [LinkedIn Profile](https://www.linkedin.com/in/chefdavehutchings/)
 
 ### License
 
