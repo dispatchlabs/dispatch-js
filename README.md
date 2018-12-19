@@ -19,6 +19,9 @@ The JavaScript version of the SDK may be included on the pae with the following 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@dispatchlabs/dispatch-js/dist/dispatch.js"></script>
 ```
+## Migrating from disnode_sdk
+
+If you are moving from our previous SDK (disnode_sdk) to this version you will need to replace all occurrences of DisNodeSDK and/or DisJS to Dispatch.
 
 ## Usage
 
