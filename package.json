@@ -1,6 +1,6 @@
 {
   "name": "@dispatchlabs/dispatch-js",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "The Dispatch SDK for Node and JavaScript developers.",
   "repository": {
     "type": "git",
