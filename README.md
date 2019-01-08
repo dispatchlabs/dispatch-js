@@ -29,6 +29,8 @@ Node:
 
 ```js
 var Dispatch = require('@dispatchlabs/dispatch-js');
+// or
+import Dispatch from '@dispatchlabs/dispatch-js';
 ```
 
 JavaScript:
@@ -134,6 +136,10 @@ let account = new Dispatch.Account({
 });
 // Send one (1) token
 let tx = account.sendTokens(new Dispatch.Account().init(), 1);
+
+// Or - to send to an address without making an account
+let tx = account.sendTokens("dbf2bb4792c1ae1338b1cdc55a9f68e0e62c0fb8", 1);
+
 ```
 
 ### [createContract](lib/models/Account.js#L293)
@@ -175,15 +181,19 @@ let account = new Dispatch.Account({
  name: 'MyAccount',
  privateKey: '472ba91402425b58a2eebf932812f20c6d7f6297bba1f83d9a58116ae6512d9e'
 });
+
 let compiled = Dispatch.Transaction.compileSource('contract x { function g() { } }');
 let contract = account.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
 contract.whenStatusEquals('Ok')
   .then(() => {
-    account.executeContract(contract, 'g', [], compiled.contracts[0].abi);
+    account.executeContract(contract, 'g', []);
   })
   .catch((err) => {
     console.error(err);
   });
+
+// Or - to call a method on a deployed contract
+account.executeContract("dbf2bb4792c1ae1338b1cdc55a9f68e0e62c0fb8", 'g', []);
 ```
 
 ## Transaction
