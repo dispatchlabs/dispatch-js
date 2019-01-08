@@ -35,13 +35,7 @@ import Dispatch from '@dispatchlabs/dispatch-js';
 
 JavaScript:
 
-For JavaScript, the top-level object is `Dispatch`. Any of the models and methods below (unless otherwise stated) can be used in the browser by replacing `Dispatch` with `Dispatch`. For example;
-
-```js
-// Create an empty account
-var account = new Dispatch.Account();
-account.init();
-```
+For JavaScript, the top-level object is `Dispatch`.
 
 ### Running examples
 
