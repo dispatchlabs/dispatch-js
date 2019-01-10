@@ -47,6 +47,17 @@ $ npm install && npm run examples
 
 To execute the JavaScript examples, open the `examples/js/index.html` file in a browser window.
 
+### Changing the network the SDK talks to
+
+In `node_modules/@dispatchlabs/dispatch-js/lib/config.json` you will see the various environments. Use development for building and testing,
+
+To change the environment set NODE_ENV:
+```sh
+$ NODE_ENV=development node myScript.js
+```
+
+By default the SDK talks to the production network.
+
 # Models
 
 ## Account
