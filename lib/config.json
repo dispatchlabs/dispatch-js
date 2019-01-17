@@ -33,7 +33,7 @@
 		}
 	},
 	"development": {
-		"seedNode": "35.197.127.151:1975",
+		"seedNode": "35.247.84.212",
 		"apiVersion": "v1",
 		"routes": {
 			"delegateList": "/delegates",
