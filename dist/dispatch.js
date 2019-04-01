@@ -2593,12 +2593,18 @@ var bigInt = (function (undefined) {
     BigInteger.prototype.divide = function (v) {
         return divModAny(this, v)[0];
     };
-    NativeBigInt.prototype.over = NativeBigInt.prototype.divide = SmallInteger.prototype.over = SmallInteger.prototype.divide = BigInteger.prototype.over = BigInteger.prototype.divide;
+    NativeBigInt.prototype.over = NativeBigInt.prototype.divide = function (v) {
+        return new NativeBigInt(this.value / parseValue(v).value);
+    };
+    SmallInteger.prototype.over = SmallInteger.prototype.divide = BigInteger.prototype.over = BigInteger.prototype.divide;
 
     BigInteger.prototype.mod = function (v) {
         return divModAny(this, v)[1];
     };
-    NativeBigInt.prototype.mod = NativeBigInt.prototype.remainder = SmallInteger.prototype.remainder = SmallInteger.prototype.mod = BigInteger.prototype.remainder = BigInteger.prototype.mod;
+    NativeBigInt.prototype.mod = NativeBigInt.prototype.remainder = function (v) {
+        return new NativeBigInt(this.value % parseValue(v).value);
+    };
+    SmallInteger.prototype.remainder = SmallInteger.prototype.mod = BigInteger.prototype.remainder = BigInteger.prototype.mod;
 
     BigInteger.prototype.pow = function (v) {
         var n = parseValue(v),
@@ -2632,21 +2638,27 @@ var bigInt = (function (undefined) {
     };
     SmallInteger.prototype.pow = BigInteger.prototype.pow;
 
-    var pow;
-    if (supportsNativeBigInt) {
-        // forced to use eval because ** is a syntax error on pre-ECMAScript2017 environments.
-        pow = eval("(a,b)=>a**b");
-    }
-
     NativeBigInt.prototype.pow = function (v) {
         var n = parseValue(v);
         var a = this.value, b = n.value;
-        if (b === BigInt(0)) return Integer[1];
-        if (a === BigInt(0)) return Integer[0];
-        if (a === BigInt(1)) return Integer[1];
+        var _0 = BigInt(0), _1 = BigInt(1), _2 = BigInt(2);
+        if (b === _0) return Integer[1];
+        if (a === _0) return Integer[0];
+        if (a === _1) return Integer[1];
         if (a === BigInt(-1)) return n.isEven() ? Integer[1] : Integer[-1];
-        if (n.isNegative()) return new NativeBigInt(BigInt(0));
-        return new NativeBigInt(pow(a, b));
+        if (n.isNegative()) return new NativeBigInt(_0);
+        var x = this;
+        var y = Integer[1];
+        while (true) {
+            if ((b & _1) === _1) {
+                y = y.times(x);
+                --b;
+            }
+            if (b === _0) break;
+            b /= _2;
+            x = x.square();
+        }
+        return y;
     }
 
     BigInteger.prototype.modPow = function (exp, mod) {
@@ -2888,7 +2900,7 @@ var bigInt = (function (undefined) {
         var n = this.abs();
         var bits = n.bitLength();
         if (bits <= 64)
-            return millerRabinTest(n, [2, 325, 9375, 28178, 450775, 9780504, 1795265022]);
+            return millerRabinTest(n, [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]);
         var logN = Math.log(2) * bits.toJSNumber();
         var t = Math.ceil((strict === true) ? (2 * Math.pow(logN, 2)) : logN);
         for (var a = [], i = 0; i < t; i++) {
@@ -24452,7 +24464,10 @@ exports.publicKeyTweakAdd = function (publicKey, tweak, compressed) {
   tweak = new BN(tweak)
   if (tweak.cmp(ecparams.n) >= 0) throw new Error(messages.EC_PUBLIC_KEY_TWEAK_ADD_FAIL)
 
-  return Buffer.from(ecparams.g.mul(tweak).add(pair.pub).encode(true, compressed))
+  var point = ecparams.g.mul(tweak).add(pair.pub)
+  if (point.isInfinity()) throw new Error(messages.EC_PUBLIC_KEY_TWEAK_ADD_FAIL)
+
+  return Buffer.from(point.encode(true, compressed))
 }
 
 exports.publicKeyTweakMul = function (publicKey, tweak, compressed) {
@@ -24536,7 +24551,7 @@ exports.sign = function (message, privateKey, noncefn, data) {
 }
 
 exports.verify = function (message, signature, publicKey) {
-  var sigObj = {r: signature.slice(0, 32), s: signature.slice(32, 64)}
+  var sigObj = { r: signature.slice(0, 32), s: signature.slice(32, 64) }
 
   var sigr = new BN(sigObj.r)
   var sigs = new BN(sigObj.s)
@@ -24546,11 +24561,11 @@ exports.verify = function (message, signature, publicKey) {
   var pair = loadPublicKey(publicKey)
   if (pair === null) throw new Error(messages.EC_PUBLIC_KEY_PARSE_FAIL)
 
-  return ec.verify(message, sigObj, {x: pair.pub.x, y: pair.pub.y})
+  return ec.verify(message, sigObj, { x: pair.pub.x, y: pair.pub.y })
 }
 
 exports.recover = function (message, signature, recovery, compressed) {
-  var sigObj = {r: signature.slice(0, 32), s: signature.slice(32, 64)}
+  var sigObj = { r: signature.slice(0, 32), s: signature.slice(32, 64) }
 
   var sigr = new BN(sigObj.r)
   var sigs = new BN(sigObj.s)
