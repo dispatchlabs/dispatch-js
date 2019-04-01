@@ -1,6 +1,6 @@
 {
   "name": "@dispatchlabs/dispatch-js",
-  "version": "2.4.3",
+  "version": "3.2.0",
   "description": "The Dispatch SDK for Node and JavaScript developers.",
   "repository": {
     "type": "git",
@@ -28,24 +28,25 @@
   "author": "Dispatch Labs <developers@dispatchlabs.io> (http://dispatchlabs.io)",
   "license": "LGPL-2.1",
   "dependencies": {
-    "big-integer": "^1.6.36",
+    "big-integer": "^1.6.43",
     "crypto": "^1.0.1",
     "keccak": "^1.4.0",
-    "secp256k1": "^3.5.0",
+    "secp256k1": "^3.6.2",
     "solc": "^0.4.24"
   },
   "devDependencies": {
     "browserify": "^16.2.3",
-    "chai": "^4.1.2",
     "cached-path-relative": ">=1.0.2",
-    "gulp-format-md": "^1.0.0",
-    "husky": "^1.1.2",
+    "chai": "^4.1.2",
+    "gulp-format-md": "^2.0.0",
+    "husky": "^1.3.1",
     "mapstraction": "^1.0.1",
     "mocha": "^5.2.0",
-    "nyc": "^12.0.2",
+    "nyc": "^13.3.0",
     "supervisor": "^0.12.0",
     "uglifyify": "^5.0.1",
-    "watchify": "^3.11.0"
+    "underscore.string": "^3.3.5",
+    "watchify": "^3.11.1"
   },
   "verb": {
     "run": true,
