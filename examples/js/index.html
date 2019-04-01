@@ -212,7 +212,7 @@
                                   write('Contract creation result:', result);
 
                                   // Exection happens from the account, to the contract, along with the method and parameters
-                                  const execute = test.executeContract(contract, 'plusOne', [1.0]);
+                                  const execute = test.executeWrite(contract, 'plusOne', [1.0]);
                                   write('Contract execution:', execute);
                                   execute
                                     .whenStatusEquals('Ok')

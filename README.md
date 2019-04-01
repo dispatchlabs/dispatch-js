@@ -168,7 +168,7 @@ let compiled = Dispatch.Transaction.compileSource('contract x { function g() { }
 let contract = account.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
 ```
 
-### [executeContract](lib/models/Account.js#L343)
+### [executeWrite](lib/models/Account.js#L343)
 
 Creates and sends a transaction from the account that will execute a method on an existing Smart Contract.
 
@@ -191,14 +191,14 @@ let compiled = Dispatch.Transaction.compileSource('contract x { function g() { }
 let contract = account.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
 contract.whenStatusEquals('Ok')
   .then(() => {
-    account.executeContract(contract, 'g', []);
+    account.executeWrite(contract, 'g', []);
   })
   .catch((err) => {
     console.error(err);
   });
 
 // Or - to call a method on a deployed contract
-account.executeContract("dbf2bb4792c1ae1338b1cdc55a9f68e0e62c0fb8", 'g', []);
+account.executeWrite("dbf2bb4792c1ae1338b1cdc55a9f68e0e62c0fb8", 'g', []);
 ```
 
 ## Transaction

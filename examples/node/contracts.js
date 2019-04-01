@@ -71,7 +71,7 @@ module.exports = () => {
                             console.log('Contract creation result:\n' + JSON.stringify(result) + '\n');
 
                             // Exection happens from the account, to the contract, along with the method and parameters
-                            const execute = test.executeContract(contract, 'plusOne', [1.0]);
+                            const execute = test.executeWrite(contract, 'plusOne', [1.0]);
                             console.log('Contract execution:\n' + execute + '\n');
                             execute
                               .whenStatusEquals('Ok')
