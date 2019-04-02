@@ -13,10 +13,12 @@ module.exports = () => {
   return new Promise((resolve, reject) => {
     console.log('--- ACCOUNT EXAMPLES ---\n');
 
+    //Optionally set the network to whichever environment you prefer
+    new Dispatch.Network("development")
     // Account is a constructor with no required inputs
     const temp = new Dispatch.Account();
     // It can also accept any account fields; the most prominant being the privateKey
-    const test = new Dispatch.Account({name: 'NodeSDKTest', privateKey: '70dcae0f1020d5b35f2be2df6146b432be594407121ac7c8cb48540ecc5e7ede' });
+    const test = new Dispatch.Account({name: 'NodeSDKTest', privateKey: '5dfdede161969f7f9fa1e2fe35ff596520c8f2856e5e4349bad54fef4b6b2ea2' });
 
     // Use account.init() to generate a private key
     temp.init();
@@ -24,7 +26,7 @@ module.exports = () => {
     console.log('Temp account:\n' + temp + '\n');
 
     // Account objects can send tokens to other accounts directly; returning the resulting Transaciton
-    let tx = test.sendTokens(temp, 5);
+    let tx = test.sendTokens(temp, 50000);
     console.log('New "sendTokens" transaction:\n' + tx + '\n');
 
     // Calling "send" on the Transaction will return the original Promise (not re-send the tx)
@@ -38,11 +40,12 @@ module.exports = () => {
                 console.log('Transaction result:\n' + JSON.stringify(result) + '\n');
 
                 // Reset
-                temp.sendTokens(test, 5).send()
+                temp.sendTokens(test, 50000).send()
                   .then(() => {
                     resolve();
                   })
                   .catch((e) => {
+                    console.log(e)
                     resolve();
                   });
 

@@ -168,7 +168,45 @@ let compiled = Dispatch.Transaction.compileSource('contract x { function g() { }
 let contract = account.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
 ```
 
-### [executeContract](lib/models/Account.js#L343)
+### [executeRead](lib/models/Account.js#L418)
+
+Calls a Smart-Contract from the account that will emulate executing a method and return the result without costing hertz or writing a transaction to the ledger.
+
+**Params**
+
+* **{string|Account|Transaction}**: to - The address of an existing contract, an Account representing the contract, or the contract creation Transaction.
+* **{string}**: method - The method in the contract to call.
+* **{array}**: params - The parameters to use during the method call.
+* `returns` **{Transaction}**: Returns a transaction which has already been sent.
+
+**Example**
+
+```js
+let account = new Dispatch.Account({
+ name: 'MyAccount',
+ privateKey: '472ba91402425b58a2eebf932812f20c6d7f6297bba1f83d9a58116ae6512d9e'
+});
+
+let compiled = Dispatch.Transaction.compileSource('contract x { function g() { } }');
+let contract = account.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
+contract.whenStatusEquals('Ok')
+  .then(() => {
+    account.executeRead(contract, 'g', [])
+        .then((result) => {
+            console.log('Contract Read result:\n' + JSON.stringify(result) + '\n');
+        }, (err) => {
+            console.log('Contract Read result error:\n' + JSON.stringify(err) + '\n');
+        });
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+// Or - to call a method on a deployed contract
+account.executeWrite("dbf2bb4792c1ae1338b1cdc55a9f68e0e62c0fb8", 'g', []);
+```
+
+### [executeWrite](lib/models/Account.js#L363)
 
 Creates and sends a transaction from the account that will execute a method on an existing Smart Contract.
 
@@ -191,14 +229,20 @@ let compiled = Dispatch.Transaction.compileSource('contract x { function g() { }
 let contract = account.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
 contract.whenStatusEquals('Ok')
   .then(() => {
-    account.executeContract(contract, 'g', []);
+    account.executeWrite(contract, 'g', [])
+        .whenStatusEquals('Ok')
+            .then((result) => {
+              console.log('Contract Write result:\n' + JSON.stringify(result) + '\n');
+            }, (err) => {
+              console.log('Contract Write result error:\n' + JSON.stringify(err) + '\n');
+            });
   })
   .catch((err) => {
     console.error(err);
   });
 
 // Or - to call a method on a deployed contract
-account.executeContract("dbf2bb4792c1ae1338b1cdc55a9f68e0e62c0fb8", 'g', []);
+account.executeWrite("dbf2bb4792c1ae1338b1cdc55a9f68e0e62c0fb8", 'g', []);
 ```
 
 ## Transaction

@@ -13,103 +13,72 @@ module.exports = () => {
   return new Promise((resolve, reject) => {
     console.log('\n\n--- SMART CONTRACT EXAMPLES ---\n');
 
-  // SETUP
-    console.log('Setting up...');
-    const tearDown = () => {
-      temp.sendTokens(test, 5).send()
-        .then(() => {
-          resolve();
-        })
-        .catch((e) => {
-          resolve();
-        });
-    };
+    // Create an Account object to sign the transactions with
+    const test = new Dispatch.Account({name: 'NodeSDKTest', privateKey: '5dfdede161969f7f9fa1e2fe35ff596520c8f2856e5e4349bad54fef4b6b2ea2' });
 
-    // Account is a constructor with no required inputs
-    const temp = new Dispatch.Account();
-    // It can also accept any account fields; the most prominant being the privateKey
-    const test = new Dispatch.Account({name: 'NodeSDKTest', privateKey: '70dcae0f1020d5b35f2be2df6146b432be594407121ac7c8cb48540ecc5e7ede' });
 
-    // Use account.init() to generate a private key
-    temp.init();
+    /******************* 
+    DEPLOYING A CONTRACT 
+    ********************/
 
-    // Account objects can send tokens to other accounts directly; returning the resulting Transaciton
-    let tx = test.sendTokens(temp, 5);
+    // Provide source code as a string
+    const sourceCode = 'pragma solidity ^0.4.24;contract math { function plusOne(uint256 y) pure public returns(uint256 x) { x = y + 1; } }';
+    console.log('Source code:\n' + sourceCode + '\n');
+
+    // Use Transaction.compileSource to easily compile solidity code
+    const compiled = Dispatch.Transaction.compileSource(sourceCode);
+    console.log('Compiled contract:');
+    console.log(compiled);
+
+    // Accounts can create Smart Contracts using compiled values
+    const contract = test.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
+    console.log('\nNew contract:\n' + contract + '\n');
 
     // Calling "send" on the Transaction will return the original Promise (not re-send the tx)
-    tx.send()
+    contract.send()
       .then(
         (ok) => {
-          // Use 'whenStatusEquals' (returns a Promise) to wait for the transaction to finish
-          tx.whenStatusEquals('Ok')
-            .then(
-              (result) => {
+          // Once a contract is created, it can be Written to
+          contract
+            .whenStatusEquals('Ok')
+              .then((result) => {
 
-  // END SETUP
-                // Provide source code as a string
-                const sourceCode = 'pragma solidity ^0.4.24;contract math { function plusOne(uint256 y) pure public returns(uint256 x) { x = y + 1; } }';
-                console.log('Source code:\n' + sourceCode + '\n');
+                console.log('Contract creation result:\n' + JSON.stringify(result) + '\n');
 
-                // Use Transaction.compileSource to easily compile solidity code
-                const compiled = Dispatch.Transaction.compileSource(sourceCode);
-                console.log('Compiled contract:');
-                console.log(compiled);
+                // Exection happens from the account, to the contract, along with the method and parameters
+                const write = test.executeWrite(contract, 'plusOne', [1.0]);
+                console.log('Contract write:\n' + write + '\n');
+                write
+                  .whenStatusEquals('Ok')
+                    .then((result) => {
+                      console.log('Contract Write result:\n' + JSON.stringify(result) + '\n');
+                    }, (err) => {
+                      console.log('Contract Write result error:\n' + JSON.stringify(err) + '\n');
+                      // Reset
+                      tearDown();
+                    });
 
-                // Accounts can create Smart Contracts using compiled values
-                const contract = test.createContract(compiled.contracts[0].bytecode, compiled.contracts[0].abi);
-                console.log('\nNew contract:\n' + contract + '\n');
-
-                // Calling "send" on the Transaction will return the original Promise (not re-send the tx)
-                contract.send()
-                  .then(
-                    (ok) => {
-                      // Once a contract is created, it can be executed
-                      contract
-                        .whenStatusEquals('Ok')
-                          .then((result) => {
-
-                            console.log('Contract creation result:\n' + JSON.stringify(result) + '\n');
-
-                            // Exection happens from the account, to the contract, along with the method and parameters
-                            const execute = test.executeContract(contract, 'plusOne', [1.0]);
-                            console.log('Contract execution:\n' + execute + '\n');
-                            execute
-                              .whenStatusEquals('Ok')
-                                .then((result) => {
-                                  console.log('Contract execution result:\n' + JSON.stringify(result) + '\n');
-
-                                  // Reset
-                                  tearDown();
-
-                                }, (err) => {
-                                  console.log('Contract execution result error:\n' + JSON.stringify(err) + '\n');
-                                  // Reset
-                                  tearDown();
-                                });
-
-                          }, (err) => {
-                            console.log('Contract creation result error:\n' + JSON.stringify(err) + '\n');
-                            // Reset
-                            tearDown();
-                          });
-                    },
-                    (err) => {
-                      console.log('Contract creation result error:\n' + JSON.stringify(err) + '\n');
-                    }
-                  );
-
+                //You can also read from a contract without writiing to the ledger
+                //Reads are free and much much faster
+                const read = test.executeRead(contract, 'plusOne', [1.0]);
+                read
+                  .then((result) => {
+                    console.log('Contract Read result:\n' + JSON.stringify(result) + '\n');
+                  }, (err) => {
+                      console.log('Contract Read result error:\n' + JSON.stringify(err) + '\n');
+                      // Reset
+                      tearDown();
+                    });
 
               }, (err) => {
-                console.log('Setup failed!');
-                console.error(err);
-              }
-            );
+                console.log('Contract creation result error:\n' + JSON.stringify(err) + '\n');
+                // Reset
+                tearDown();
+              });
         },
         (err) => {
-          console.log('Setup failed!');
-          console.error(err);
+          console.log('Contract creation result error:\n' + JSON.stringify(err) + '\n');
         }
       );
   });
-
 };
